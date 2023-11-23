@@ -129,10 +129,42 @@ const getAllUsers = async (req: Request, res: Response) => {
       });
     }
   };
+
+  const createOrder = async (req: Request, res: Response) => {
+    try {
+      const orderData = req.body;
+      const { userId } = req.params;
+      console.log(userId);
+      const result = await userServices.createOrderToDB(Number(userId), orderData);
+     if(result){
+        res.status(200).json({
+            success: true,
+            message: 'Order created successfully!',
+            data: null,
+          });
+     } else {
+        res.status(400).json({
+            success: false,
+            message: 'User not found',
+            error: {
+                code: "404",
+                description: "User not found!"
+            }
+          });
+     }
+    } catch (error: any) {
+      res.status(200).json({
+        success: false,
+        message: error.message || 'Something went wrong.',
+        data: error,
+      });
+    }
+  };
 export const UserControllers = {
     createUser,
     getAllUsers,
     getSingleUser,
     updateSingleUser,
-    deleteUser
+    deleteUser,
+    createOrder
 }
