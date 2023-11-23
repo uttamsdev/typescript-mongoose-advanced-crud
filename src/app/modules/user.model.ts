@@ -52,9 +52,9 @@ userSchema.methods.toJSON = function() {
 // userSchema.post('save', async function(doc, next){
     
 // })
-// userSchema.statics.isUserExists = async function(id: string){
-//     const existingUser = await Student.findOne({id: id});
-//     return existingUser;
-// }
+userSchema.statics.isUserExists = async function(userId: number){
+    const existingUser = await User.findOne({userId: userId});
+    return existingUser;
+}
 
 export const User = model<TUser, UserModel>('User',userSchema);
