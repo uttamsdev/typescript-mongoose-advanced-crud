@@ -189,6 +189,37 @@ const getAllUsers = async (req: Request, res: Response) => {
       });
     }
   };
+
+  const calCulateTotalPrice = async (req: Request, res: Response) => {
+    try {
+      const { userId } = req.params;
+      const result = await userServices.calculateTotalPriceFromDB(Number(userId));
+     if(result){
+        res.status(200).json({
+            success: true,
+            message: 'Total price calculated successfully!',
+            data: {
+                totalPrice: result[0].totalPrice
+            }
+          });
+     } else {
+        res.status(400).json({
+            success: false,
+            message: 'User not found',
+            error: {
+                code: "404",
+                description: "User not found!"
+            }
+          });
+     }
+    } catch (error: any) {
+      res.status(200).json({
+        success: false,
+        message: error.message || 'Something went wrong.',
+        data: error,
+      });
+    }
+  };
 export const UserControllers = {
     createUser,
     getAllUsers,
@@ -196,5 +227,6 @@ export const UserControllers = {
     updateSingleUser,
     deleteUser,
     createOrder,
-    getOrders
+    getOrders,
+    calCulateTotalPrice
 }

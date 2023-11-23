@@ -39,18 +39,43 @@ const deleteUserFromDB = async (userId: number) => {
 };
 
 const createOrderToDB = async (userId: number, orderData: TOrders) => {
-    if (await User.isUserExists(userId)) {
-      const result = await User.updateOne({ userId: userId },{$push: {orders: orderData}});
-      return result;
-    }
-  };
+  if (await User.isUserExists(userId)) {
+    const result = await User.updateOne(
+      { userId: userId },
+      { $push: { orders: orderData } },
+    );
+    return result;
+  }
+};
 
-  const getOrdersFromDB = async (userId: number) => {
-    if (await User.isUserExists(userId)) {
-      const result = await User.findOne({ userId: userId }).select({orders: 1})
-      return result;
-    }
-  };
+const getOrdersFromDB = async (userId: number) => {
+  if (await User.isUserExists(userId)) {
+    const result = await User.findOne({ userId: userId }).select({ orders: 1 });
+    return result;
+  }
+};
+
+const calculateTotalPriceFromDB = async (userId: number) => {
+  if (await User.isUserExists(userId)) {
+    const result = await User.aggregate([
+        {
+          $unwind: "$orders"
+        },
+        {
+          $group: {
+            _id: null,
+            totalPrice: { $sum: { $multiply: ["$orders.price", "$orders.quantity"] } }
+          }
+        },
+        {
+            $project: {totalPrice: 1}
+        }
+      ]);
+      
+    
+    return result;
+  }
+};
 export const userServices = {
   createUserIntoDB,
   getUsersFromDB,
@@ -58,5 +83,6 @@ export const userServices = {
   updateSingleUserFromDB,
   deleteUserFromDB,
   createOrderToDB,
-  getOrdersFromDB
+  getOrdersFromDB,
+  calculateTotalPriceFromDB
 };
