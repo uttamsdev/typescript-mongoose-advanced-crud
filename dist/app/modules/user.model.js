@@ -43,15 +43,15 @@ const userAddressSchema = new mongoose_1.Schema({
 const userOrderSchema = new mongoose_1.Schema({
     productName: {
         type: String,
-        // required: [true, 'Product name is required it cannot be empty'],
+        required: [true, 'Product name is required it cannot be empty'],
     },
     price: {
         type: Number,
-        // required: [true, 'Price is required it cannot be empty'],
+        required: [true, 'Price is required it cannot be empty'],
     },
     quantity: {
         type: Number,
-        // required: [true, 'Quantity is required it cannot be empty'],
+        required: [true, 'Quantity is required it cannot be empty'],
     },
 });
 const userSchema = new mongoose_1.Schema({
@@ -81,7 +81,7 @@ const userSchema = new mongoose_1.Schema({
         type: String,
         required: [true, 'email is required it cannot be empty'],
     },
-    isActive: { type: Boolean, required: true, default: true },
+    isActive: { type: Boolean, default: true },
     hobbies: {
         type: [String],
         required: [true, 'Hobbies is required it cannot be empty'],

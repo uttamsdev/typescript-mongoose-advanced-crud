@@ -35,6 +35,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserControllers = void 0;
 const user_service_1 = require("./user.service");
 const user_validation_1 = __importStar(require("./user.validation"));
+//Create an user
 const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const userData = req.body;
@@ -66,6 +67,7 @@ const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         });
     }
 });
+//Get all users
 const getAllUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const result = yield user_service_1.userServices.getUsersFromDB();
@@ -83,6 +85,7 @@ const getAllUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         });
     }
 });
+//get single user by id
 const getSingleUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { userId } = req.params;
@@ -113,12 +116,12 @@ const getSingleUser = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         });
     }
 });
+//Update a single user by id
 const updateSingleUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const userData = req.body;
         const { userId } = req.params;
-        const zodParsedData = user_validation_1.default.parse(userData);
-        // console.log(zodParsedData)
+        const zodParsedData = user_validation_1.userUpdateValidationSchema.parse(userData);
         const response = {
             userId: zodParsedData.userId,
             username: zodParsedData.username,
@@ -129,7 +132,6 @@ const updateSingleUser = (req, res) => __awaiter(void 0, void 0, void 0, functio
             address: zodParsedData.address
         };
         const result = yield user_service_1.userServices.updateSingleUserFromDB(Number(userId), zodParsedData);
-        // console.log("result: ",result)
         if (result) {
             res.status(200).json({
                 success: true,
@@ -156,6 +158,7 @@ const updateSingleUser = (req, res) => __awaiter(void 0, void 0, void 0, functio
         });
     }
 });
+//delete a single user by id
 const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { userId } = req.params;
@@ -186,6 +189,7 @@ const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         });
     }
 });
+//Create order 
 const createOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const orderData = req.body;
@@ -218,6 +222,7 @@ const createOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         });
     }
 });
+//Get orders by id
 const getOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { userId } = req.params;
@@ -253,6 +258,7 @@ const getOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         });
     }
 });
+//Calculate total price of orders by id
 const calCulateTotalPrice = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { userId } = req.params;

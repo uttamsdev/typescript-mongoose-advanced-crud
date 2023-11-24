@@ -31,7 +31,9 @@ const getSingleUserFromDB = (userId) => __awaiter(void 0, void 0, void 0, functi
         return result;
     }
 });
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const updateSingleUserFromDB = (userId, userData) => __awaiter(void 0, void 0, void 0, function* () {
+    //static method
     if (yield user_model_1.User.isUserExists(userId)) {
         const result = yield user_model_1.User.updateOne({ userId: userId }, userData).select("-password");
         return result;

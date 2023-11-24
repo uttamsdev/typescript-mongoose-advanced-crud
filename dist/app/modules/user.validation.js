@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.userOrderValidationSchema = void 0;
+exports.userUpdateValidationSchema = exports.userOrderValidationSchema = void 0;
 const zod_1 = require("zod");
 const userNameSchema = zod_1.z.object({
     firstName: zod_1.z.string().min(1).refine(data => data.length > 0, {
@@ -54,6 +54,18 @@ const userValidationSchema = zod_1.z.object({
     address: userAddressSchema.refine(data => data.street.length > 0 && data.city.length > 0 && data.country.length > 0, {
         message: 'Address is required and cannot be empty',
     }),
+    orders: zod_1.z.array(exports.userOrderValidationSchema).optional(),
+});
+exports.userUpdateValidationSchema = zod_1.z.object({
+    userId: zod_1.z.number().positive('User ID must be a positive number').optional(),
+    username: zod_1.z.string().min(1).optional(),
+    password: zod_1.z.string().min(1).optional(),
+    fullName: userNameSchema.optional(),
+    age: zod_1.z.number().positive('Age must be a positive number').optional(),
+    email: zod_1.z.string().email('Invalid email format').optional(),
+    isActive: zod_1.z.boolean().default(true).optional(),
+    hobbies: zod_1.z.array(zod_1.z.string().min(1)).optional(),
+    address: userAddressSchema.optional(),
     orders: zod_1.z.array(exports.userOrderValidationSchema).optional(),
 });
 exports.default = userValidationSchema;
