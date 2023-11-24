@@ -21,7 +21,7 @@ const userAddressSchema = z.object({
   }),
 });
 
-const userOrderSchema = z.object({
+export const userOrderValidationSchema = z.object({
   productName: z.string(),
   price: z.number(),
   quantity: z.number()
@@ -55,7 +55,7 @@ const userValidationSchema = z.object({
   address: userAddressSchema.refine(data => data.street.length > 0 && data.city.length > 0 && data.country.length > 0, {
     message: 'Address is required and cannot be empty',
   }),
-  orders: z.array(userOrderSchema).optional(),
+  orders: z.array(userOrderValidationSchema).optional(),
 });
 
 export default userValidationSchema;

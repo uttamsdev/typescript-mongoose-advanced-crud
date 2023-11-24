@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response } from "express";
 import { userServices } from "./user.service";
-import userValidationSchema from "./user.validation";
+import userValidationSchema, { userOrderValidationSchema } from "./user.validation";
+import { TOrders } from "./user.interface";
 
 const createUser = async(req : Request, res : Response) => {
 
@@ -80,11 +81,12 @@ const getAllUsers = async (req: Request, res: Response) => {
     try {
     const userData = req.body;
       const { userId } = req.params;
-      const result = await userServices.updateSingleUserFromDB(Number(userId), userData);
+      const zodParsedData = userValidationSchema.parse(userData)
+      const result = await userServices.updateSingleUserFromDB(Number(userId), zodParsedData);
      if(result){
         res.status(200).json({
             success: true,
-            message: 'User fetched successfully!',
+            message: 'User updated successfully!',
             data: result,
           });
      } else {
@@ -139,8 +141,8 @@ const getAllUsers = async (req: Request, res: Response) => {
     try {
       const orderData = req.body;
       const { userId } = req.params;
-    //   console.log(userId);
-      const result = await userServices.createOrderToDB(Number(userId), orderData);
+      const zodParsedData : TOrders = userOrderValidationSchema.parse(orderData)
+      const result = await userServices.createOrderToDB(Number(userId), zodParsedData);
      if(result){
         res.status(200).json({
             success: true,
