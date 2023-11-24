@@ -19,7 +19,7 @@ const getUsersFromDB = async () => {
 
 const getSingleUserFromDB = async (userId: number) => {
   if (await User.isUserExists(userId)) {
-    const result = await User.findOne({ userId: userId });
+    const result = await User.findOne({ userId: userId }).select("-orders");
     return result;
   }
 };

@@ -110,7 +110,11 @@ userSchema.pre('save', async function (next) {
 
 userSchema.methods.toJSON = function () {
   const obj = this.toObject();
-  delete obj.password;
+  delete obj?.password;
+  delete obj?.fullName?._id;
+  delete obj?.orders?._id;
+  delete obj?.address?._id;
+  delete obj?._id;
 //   delete obj.orders;
   return obj;
 };
