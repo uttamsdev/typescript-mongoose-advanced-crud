@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start:prod": "node ./dist/server.js",
+    "start": "node ./dist/server.js",
     "start:dev": "ts-node-dev --respawn --transpile-only src/server.ts",
     "build": "tsc",
     "lint": "eslint src --ignore-path .eslintignore --ext .ts",

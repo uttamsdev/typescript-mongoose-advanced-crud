@@ -89,14 +89,6 @@ const userSchema = new Schema<TUser, UserModel>(
     },
     orders: { type: [userOrderSchema], required: false },
   },
-//   {
-//     toJSON: {
-//       virtuals: true,
-//       transform: (doc, ret) => {
-//         delete ret.orders;
-//       },
-//     },
-//   },
 );
 
 //model
@@ -110,19 +102,17 @@ userSchema.pre('save', async function (next) {
 
 userSchema.methods.toJSON = function () {
   const obj = this.toObject();
-  delete obj?.password;
   delete obj?.fullName?._id;
   delete obj?.orders?._id;
   delete obj?.address?._id;
   delete obj?._id;
-//   delete obj.orders;
+  delete obj?.password;
+  delete obj?.__v
+  
   return obj;
 };
 
-// userSchema.post('save', async function (doc, next) {
-//   delete doc.orders;
-//   next();
-// });
+
 userSchema.statics.isUserExists = async function (userId: number) {
   const existingUser = await User.findOne({ userId: userId });
   return existingUser;

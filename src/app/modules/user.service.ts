@@ -26,7 +26,7 @@ const getSingleUserFromDB = async (userId: number) => {
 
 const updateSingleUserFromDB = async (userId: number, userData: TUser) => {
   if (await User.isUserExists(userId)) {
-    const result = await User.updateOne({ userId: userId }, userData);
+    const result = await User.updateOne({ userId: userId }, userData).select("-password");
     return result;
   }
 };
@@ -58,6 +58,9 @@ const getOrdersFromDB = async (userId: number) => {
 const calculateTotalPriceFromDB = async (userId: number) => {
   if (await User.isUserExists(userId)) {
     const result = await User.aggregate([
+        {
+          $match: {userId: userId}
+        },
         {
           $unwind: "$orders"
         },
