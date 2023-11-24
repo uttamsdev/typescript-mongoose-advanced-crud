@@ -2,11 +2,12 @@
 import { Request, Response } from 'express';
 import { userServices } from './user.service';
 import userValidationSchema, {
-  userOrderValidationSchema,
+  userOrderValidationSchema, userUpdateValidationSchema,
 } from './user.validation';
 import { TOrders } from './user.interface';
 import { any } from 'zod';
 
+//Create an user
 const createUser = async (req: Request, res: Response) => {
   try {
     const userData = req.body;
@@ -37,6 +38,7 @@ const createUser = async (req: Request, res: Response) => {
   }
 };
 
+//Get all users
 const getAllUsers = async (req: Request, res: Response) => {
   try {
     const result = await userServices.getUsersFromDB();
@@ -54,6 +56,7 @@ const getAllUsers = async (req: Request, res: Response) => {
   }
 };
 
+//get single user by id
 const getSingleUser = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
@@ -83,12 +86,12 @@ const getSingleUser = async (req: Request, res: Response) => {
   }
 };
 
+//Update a single user by id
 const updateSingleUser = async (req: Request, res: Response) => {
   try {
     const userData = req.body;
     const { userId } = req.params;
-    const zodParsedData = userValidationSchema.parse(userData);
-    // console.log(zodParsedData)
+    const zodParsedData = userUpdateValidationSchema.parse(userData);
     const response = {
       userId: zodParsedData.userId,
       username: zodParsedData.username,
@@ -103,7 +106,7 @@ const updateSingleUser = async (req: Request, res: Response) => {
       zodParsedData,
     );
     
-    // console.log("result: ",result)
+
     if (result) {
       res.status(200).json({
         success: true,
@@ -129,6 +132,7 @@ const updateSingleUser = async (req: Request, res: Response) => {
   }
 };
 
+//delete a single user by id
 const deleteUser = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
@@ -158,6 +162,7 @@ const deleteUser = async (req: Request, res: Response) => {
   }
 };
 
+//Create order 
 const createOrder = async (req: Request, res: Response) => {
   try {
     const orderData = req.body;
@@ -192,6 +197,7 @@ const createOrder = async (req: Request, res: Response) => {
   }
 };
 
+//Get orders by id
 const getOrders = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
@@ -226,6 +232,7 @@ const getOrders = async (req: Request, res: Response) => {
   }
 };
 
+//Calculate total price of orders by id
 const calCulateTotalPrice = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;

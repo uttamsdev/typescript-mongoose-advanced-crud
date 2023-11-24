@@ -1,5 +1,5 @@
 import { Model } from "mongoose";
-
+//User interface
 export type TUserName = {
     firstName: string;
     lastName: string;

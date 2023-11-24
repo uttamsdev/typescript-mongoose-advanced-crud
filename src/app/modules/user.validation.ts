@@ -58,4 +58,16 @@ const userValidationSchema = z.object({
   orders: z.array(userOrderValidationSchema).optional(),
 });
 
+export const userUpdateValidationSchema = z.object({
+  userId: z.number().positive('User ID must be a positive number').optional(),
+  username: z.string().min(1).optional(),
+  password: z.string().min(1).optional(),
+  fullName: userNameSchema.optional(),
+  age: z.number().positive('Age must be a positive number').optional(),
+  email: z.string().email('Invalid email format').optional(),
+  isActive: z.boolean().default(true).optional(),
+  hobbies: z.array(z.string().min(1)).optional(),
+  address: userAddressSchema.optional(),
+  orders: z.array(userOrderValidationSchema).optional(),
+});
 export default userValidationSchema;

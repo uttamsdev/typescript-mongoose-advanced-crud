@@ -24,7 +24,9 @@ const getSingleUserFromDB = async (userId: number) => {
   }
 };
 
-const updateSingleUserFromDB = async (userId: number, userData: TUser) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const updateSingleUserFromDB = async (userId: number, userData : any) => {
+  //static method
   if (await User.isUserExists(userId)) {
     const result = await User.updateOne({ userId: userId }, userData).select("-password");
     return result;
