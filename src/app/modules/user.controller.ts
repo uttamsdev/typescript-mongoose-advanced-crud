@@ -1,17 +1,22 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response } from "express";
 import { userServices } from "./user.service";
+import userValidationSchema from "./user.validation";
 
 const createUser = async(req : Request, res : Response) => {
 
     try {
         const userData = req.body;
-        const result = await userServices.createUserIntoDB(userData);
+         //data validation using zod
+        const zodParsedData = userValidationSchema.parse(userData)
+        const result = await userServices.createUserIntoDB(zodParsedData);
+        const userWithoutOrders = result.toObject({ transform: (doc, ret) => { delete ret.orders; delete ret.password} });
         res.status(200).json({
-            success: true,
-            message: 'User created successfully!',
-            data: result
-          });
+          success: true,
+          message: 'User created successfully!',
+          data: userWithoutOrders
+        });
+      
     } catch (error: any) {
         res.status(200).json({
             success: false,
@@ -165,6 +170,8 @@ const getAllUsers = async (req: Request, res: Response) => {
     try {
       const { userId } = req.params;
       const result = await userServices.getOrdersFromDB(Number(userId));
+
+      
      if(result){
         res.status(200).json({
             success: true,
